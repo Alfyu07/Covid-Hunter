@@ -30,8 +30,8 @@ public class Position {
         this.y = y;
     }
 
-    public void apply(Movement movement) {
-        Vector2D vector = movement.getVector();
+    public void apply(Motion motion) {
+        Vector2D vector = motion.getVector();
         x += vector.getX();
         y += vector.getY ();
     }

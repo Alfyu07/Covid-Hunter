@@ -22,11 +22,13 @@ public class SpriteLibrary {
         for (String folderName : folderNames){
             SpriteSet spriteSet = new SpriteSet();
             String pathFolder = PATH_TO_UNITS + "/" + folderName;
-            String[] SheetsInFolder = getSheetsInFolder(pathFolder);
+            String[] sheetsInFolder = getSheetsInFolder(pathFolder);
 
-            for(String sheetName : SheetsInFolder){
-                spriteSet.addSheet(sheetName.substring(0, sheetName.length() -4),
-                        ImageUtils.loadImage(pathFolder + "/" + sheetName));
+            for(String sheetName : sheetsInFolder){
+                spriteSet.addSheet(
+                        sheetName.substring(0, sheetName.length() -4),
+                        ImageUtils.loadImage(pathFolder + "/" + sheetName)
+                );
             }
             units.put(folderName, spriteSet);
         }
@@ -46,4 +48,7 @@ public class SpriteLibrary {
         return file.list((current, name) -> new File(current, name).isDirectory());
     }
 
+    public SpriteSet getUnit(String name) {
+        return units.get(name);
+    }
 }
