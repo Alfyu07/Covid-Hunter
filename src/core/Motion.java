@@ -36,7 +36,7 @@ public class Motion {
         vector = new Vector2D(deltaX, deltaY);
         vector.normalize();
         vector.multiply(speed);
-        System.out.println(vector.length());
+//        System.out.println(vector.length());
     }
 
     public Vector2D getVector() {
