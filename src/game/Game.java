@@ -1,6 +1,7 @@
 package game;
 
 import controller.PlayerController;
+import core.Size;
 import display.Display;
 import entities.GameObject;
 import entities.Player;
@@ -23,7 +24,7 @@ public class Game {
     public Game(int width, int height) {
         input = new Input();
         display = new Display(width, height,input);
-        state = new GameState(input);
+        state = new GameState(new Size(width,height), input);
     }
 
     public void update(){
