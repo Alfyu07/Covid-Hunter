@@ -7,7 +7,7 @@ public class GameLoop implements Runnable{
     private boolean running;
     private final double updateRate = 1.0d/60.d;
 
-    private long nextStatTime;
+    private long nextStatTime; //untuk cek kapan harus print statistik
     private int fps, ups;
 
     public GameLoop(Game game) {
@@ -40,13 +40,12 @@ public class GameLoop implements Runnable{
     }
 
     private void printStats() {
-        if(System. currentTimeMillis() > nextStatTime){
+        if(System.currentTimeMillis() > nextStatTime){
             System.out.println(String.format("Fps : %d, UPS : %d", fps, ups));
             fps = 0;
             ups = 0;
             nextStatTime = System.currentTimeMillis() + 1000;
         }
-
     }
 
     private void update() {

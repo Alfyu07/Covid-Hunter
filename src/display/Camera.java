@@ -27,6 +27,7 @@ public class Camera {
         if(objectWithFocus.isPresent()) {
             Position objectPosition = objectWithFocus.get().getPosition();
 
+            //ubah posisi kamera ke tengah object
             this.position.setX(objectPosition.getX() - windowSize.getWidth() / 2);
             this.position.setY(objectPosition.getY() - windowSize.getHeight() / 2);
 
