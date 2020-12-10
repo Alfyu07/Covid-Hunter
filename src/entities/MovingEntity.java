@@ -3,6 +3,7 @@ package entities;
 import controller.Controller;
 import core.Motion;
 import core.Direction;
+import game.state.State;
 import gfx.AnimationManager;
 import gfx.SpriteLibrary;
 
@@ -24,7 +25,7 @@ public abstract class MovingEntity extends GameObject {
         this.animationManager = new AnimationManager(spriteLibrary.getUnit("matt"));
     }
     @Override
-    public void update(){
+    public void update(State state){
         motion.update(controller);
         position.apply(motion);
         manageDirection();
