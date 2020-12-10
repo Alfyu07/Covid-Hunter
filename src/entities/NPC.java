@@ -2,6 +2,7 @@ package entities;
 
 import ai.AIManager;
 import controller.Controller;
+import controller.NPCController;
 import game.state.State;
 import gfx.AnimationManager;
 import gfx.SpriteLibrary;
@@ -21,4 +22,6 @@ public class NPC extends MovingEntity {
         super.update (state);
         aiManager.update(state, this);
     }
+
+
 }

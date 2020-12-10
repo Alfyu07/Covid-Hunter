@@ -1,9 +1,16 @@
 package core;
 
 public class Position {
+    public static int RANGE = 5;
+
     private double x, y;
 
     public Position(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Position(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -34,5 +41,9 @@ public class Position {
         Vector2D vector = motion.getVector();
         x += vector.getX();
         y += vector.getY ();
+    }
+
+    public boolean isRangeOf(Position position) {
+        return Math.abs(x - position.getX()) < Position.RANGE && Math.abs(y - position.getY()) < Position.RANGE;
     }
 }
