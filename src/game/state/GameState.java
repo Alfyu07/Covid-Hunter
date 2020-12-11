@@ -5,6 +5,8 @@ import controller.PlayerController;
 import core.Size;
 import entities.NPC;
 import entities.Player;
+import entities.action.Cough;
+import entities.effect.Sick;
 import input.Input;
 import map.GameMap;
 
@@ -27,6 +29,9 @@ public class GameState extends State{
         for(int i = 0; i< numberOfNPC; i++){
             NPC npc = new NPC(new NPCController(), spriteLibrary);
             npc.setPosition(gameMap.getRandomPosition());
+            npc.perform(new Cough());
+            
+            npc.addEffect(new Sick());
             gameObjects.add(npc);
 
         }
