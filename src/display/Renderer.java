@@ -1,8 +1,10 @@
 package display;
 
 
+import core.Position;
 import game.Game;
 import game.state.State;
+import map.GameMap;
 import map.Tile;
 
 import java.awt.Graphics;
@@ -12,7 +14,9 @@ public class Renderer {
     public void render(State state, Graphics g){
         renderMap(state, g);
         Camera camera = state.getCamera();
-        state.getGameObjects().forEach(gameObject -> g.drawImage(
+        state.getGameObjects().stream()
+                .filter(gameObject -> camera. isInView(gameObject))
+                .forEach(gameObject -> g.drawImage(
                 gameObject.getSprite(),
                 gameObject.getPosition().intX() -
                         camera.getPosition().intX() -
@@ -25,11 +29,16 @@ public class Renderer {
     }
 
     private void renderMap(State state, Graphics g) {
-        Tile[][] tiles = state.getGameMap().getTiles();
+        GameMap map = state.getGameMap();
         Camera camera = state.getCamera();
-        for(int x = 0; x<tiles.length; x++){
-            for (int y = 0; y<tiles[0].length; y++){
-                g.drawImage(tiles[x][y].getSprite(),
+
+        Position start = map.getStartView(camera);
+        Position end = map.getEndView(camera);
+
+
+        for(int x = start.intX(); x < end.intX(); x++){
+            for (int y = start.intY(); y < end.intY(); y++){
+                g.drawImage(map.getTiles()[x][y].getSprite(),
                         x* Game.SPRITE_SIZE - camera.getPosition().intX()  ,
                         y * Game.SPRITE_SIZE - camera.getPosition().intY() ,
                         null);
