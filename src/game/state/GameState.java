@@ -9,6 +9,8 @@ import entities.action.Cough;
 import entities.effect.Sick;
 import input.Input;
 import map.GameMap;
+import ui.Spacing;
+import ui.UIContainer;
 
 public class GameState extends State{
 
@@ -16,13 +18,22 @@ public class GameState extends State{
         super(windowSize, input);
         gameMap = new GameMap(new Size(20,20) ,spriteLibrary);
         initializeCharacter();
-        initializeNPC(100);
+        initialzeUI();
+    }
+
+    private void initialzeUI() {
+        UIContainer container = new UIContainer();
+        container.setPadding(new Spacing(50));
+        container.setMargin(new Spacing(10));
+        uiContainers.add(container);
     }
 
     private void initializeCharacter() {
         Player player = new Player(new PlayerController(input), spriteLibrary);
         gameObjects.add(player);
         camera.focusOn(player);
+        initializeNPC(100);
+
     }
 
     private void initializeNPC(int numberOfNPC) {
