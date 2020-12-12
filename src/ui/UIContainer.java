@@ -26,6 +26,7 @@ public abstract class UIContainer extends UIComponent{
         super();
         this.backgroundColor = Color.red;
         margin = new Spacing(5);
+        padding = new Spacing(5);
         child = new ArrayList<>();
         calculateSize();
         calculatePosition();
