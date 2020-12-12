@@ -17,7 +17,11 @@ public abstract class GameObject {
 
     public abstract void update(State state);
     public abstract Image getSprite();
+
+
+    //method untuk mengambil collision box
     public abstract CollisionBox getCollisionBox();
+    //cek apakah interseksi di yang lain.
     public abstract boolean collidesWith(GameObject other);
 
     public Position getPosition() {

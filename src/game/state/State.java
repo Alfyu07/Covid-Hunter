@@ -62,6 +62,8 @@ public abstract class State {
     }
 
     public List<GameObject> getCollidingGameObjects(GameObject gameObject){
+
+        //cek jika di list object ada yang saling collide dengan object lain dan return object2 yang berkolisi tersbut
         return gameObjects.stream()
                 .filter(other -> other.collidesWith(gameObject))
                 .collect(Collectors.toList());

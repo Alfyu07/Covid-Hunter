@@ -1,16 +1,15 @@
 package entities;
 
 import controller.Controller;
-import core.CollisionBox;
-import core.Motion;
-import core.Direction;
+import core.*;
 import entities.action.Action;
 import entities.effect.Effect;
 import game.state.State;
 import gfx.AnimationManager;
 import gfx.SpriteLibrary;
 
-import java.awt.*;
+import java.awt.Image;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,7 @@ public abstract class MovingEntity extends GameObject {
     protected List<Effect> effects;
 
     protected Optional<Action> action;
-
+    protected Size collisionBoxSize;
     public MovingEntity(Controller controller, SpriteLibrary spriteLibrary) {
         super();
         this.controller = controller;
@@ -34,6 +33,7 @@ public abstract class MovingEntity extends GameObject {
 
         effects = new ArrayList<>();
         action = Optional.empty();
+        this.collisionBoxSize = new Size(16,32);
     }
 
     @Override
@@ -74,6 +74,26 @@ public abstract class MovingEntity extends GameObject {
         }
     }
 
+    @Override
+    public boolean collidesWith(GameObject other) {
+        return getCollisionBox().collideWith(other.getCollisionBox());
+    }
+
+    @Override
+    public CollisionBox getCollisionBox() {
+        Position positionWithMotion = Position.copyOf(position);
+        positionWithMotion.apply(motion);
+        return new CollisionBox(
+                new Rectangle(
+                    positionWithMotion.intX(),
+                    positionWithMotion.intY(),
+                    collisionBoxSize.getWidth(),
+                    collisionBoxSize.getHeight()
+                )
+        );
+    }
+
+
     protected void cleanup(){
         List.copyOf(effects).stream()
         .filter(Effect::shouldDelete)
@@ -98,17 +118,6 @@ public abstract class MovingEntity extends GameObject {
         if(motion.isMoving()){
             this.direction = Direction.fronMotion(motion);
         }
-    }
-
-    @Override
-    public boolean collidesWith(GameObject other) {
-        return getCollisionBox().collideWith(other.getCollisionBox());
-    }
-
-    @Override
-    public CollisionBox getCollisionBox() {
-        return new CollisionBox(new Rectangle(position.intX(), position.intY(),
-                size.getWidth(), size.getHeight()));
     }
 
     @Override

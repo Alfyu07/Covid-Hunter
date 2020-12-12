@@ -1,17 +1,11 @@
 package game;
 
-import controller.PlayerController;
 import core.Size;
 import display.Display;
-import entities.GameObject;
-import entities.Player;
+import game.settings.GameSetting;
 import game.state.GameState;
 import game.state.State;
-import gfx.SpriteLibrary;
 import input.Input;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Game {
 
@@ -20,11 +14,13 @@ public class Game {
     private Display display;
     private Input input;
     private State state;
+    private GameSetting settings;
 
     public Game(int width, int height) {
         input = new Input();
         display = new Display(width, height,input);
         state = new GameState(new Size(width,height), input);
+        settings = new GameSetting(true);
     }
 
     public void update(){
@@ -32,7 +28,7 @@ public class Game {
     }
 
     public void render(){
-        display.render(state);
+        display.render(state, settings.isDebugMode());
     }
 
 
