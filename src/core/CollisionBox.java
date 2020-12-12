@@ -14,6 +14,18 @@ public class CollisionBox {
         this.bounds = bounds;
     }
 
+    //helper method
+    public static CollisionBox of(Position position, Size size) {
+        return new CollisionBox(
+                new Rectangle(
+                        position.intX(),
+                        position.intY(),
+                        size.getWidth(),
+                        size.getHeight()
+                )
+        );
+    }
+
     //apakah bertabrakan dengan object lain (saling interseksi)
     public boolean collideWith(CollisionBox other){
         return bounds.intersects(other.bounds);

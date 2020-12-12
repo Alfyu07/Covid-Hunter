@@ -64,7 +64,7 @@ public abstract class MovingEntity extends GameObject {
         if(!action.isPresent()){
             motion.update(controller);
         }else{
-            motion.stop();
+            motion.stop(true, true);
         }
     }
 
@@ -139,5 +139,19 @@ public abstract class MovingEntity extends GameObject {
 
     public void addEffect(Effect effect) {
         effects.add(effect);
+    }
+
+    boolean willCollideX(GameObject other){
+        CollisionBox otherBox = other.getCollisionBox();
+        Position positionWithXApplied = Position.copyOf(position);
+        positionWithXApplied.applyX(motion);
+        return CollisionBox.of(positionWithXApplied, collisionBoxSize).collideWith(otherBox);
+    }
+
+    boolean willCollideY(GameObject other){
+        CollisionBox otherBox = other.getCollisionBox();
+        Position positionWithYApplied = Position.copyOf(position);
+        positionWithYApplied.applyY(motion);
+        return CollisionBox.of(positionWithYApplied, collisionBoxSize).collideWith(otherBox);
     }
 }

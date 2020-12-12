@@ -43,11 +43,19 @@ public class Position {
 
     public void apply(Motion motion) {
         Vector2D vector = motion.getVector();
-        x += vector.getX();
-        y += vector.getY ();
+        x+=vector.getX();
+        y+= vector.getY();
     }
 
     public boolean isRangeOf(Position position) {
         return Math.abs(x - position.getX()) < Position.RANGE && Math.abs(y - position.getY()) < Position.RANGE;
+    }
+
+    public void applyX(Motion motion) {
+        x += motion.getVector().getX();
+    }
+
+    public void applyY(Motion motion) {
+        x += motion.getVector().getY();
     }
 }

@@ -3,7 +3,8 @@ package display;
 import core.CollisionBox;
 import game.state.State;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 
 public class DebugRenderer {
     public void render(State state, Graphics g){
