@@ -10,5 +10,10 @@ public class Player extends MovingEntity {
 
     }
 
+    @Override
+    protected void handleCollision(GameObject other) {
+
+    }
+
 
 }

@@ -1,17 +1,16 @@
 package entities;
 
 import controller.Controller;
+import core.CollisionBox;
 import core.Motion;
 import core.Direction;
 import entities.action.Action;
-import entities.action.Cough;
 import entities.effect.Effect;
-import entities.effect.Sick;
 import game.state.State;
 import gfx.AnimationManager;
 import gfx.SpriteLibrary;
 
-import java.awt.Image;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +35,7 @@ public abstract class MovingEntity extends GameObject {
         effects = new ArrayList<>();
         action = Optional.empty();
     }
+
     @Override
     public void update(State state){
         handleAction(state);
@@ -44,6 +44,8 @@ public abstract class MovingEntity extends GameObject {
         animationManager.update(direction);
         effects.forEach(effect -> effect.update(state, this));
 
+        handleCollisions(state);
+
         manageDirection();
         decideAnimation();
 
@@ -51,6 +53,12 @@ public abstract class MovingEntity extends GameObject {
 
         cleanup();
     }
+
+    protected void handleCollisions(State state){
+        state.getCollidingGameObjects(this).forEach(this::handleCollision);
+    }
+    protected abstract void handleCollision(GameObject other);
+
 
     protected void handleMotion(){
         if(!action.isPresent()){
@@ -90,6 +98,17 @@ public abstract class MovingEntity extends GameObject {
         if(motion.isMoving()){
             this.direction = Direction.fronMotion(motion);
         }
+    }
+
+    @Override
+    public boolean collidesWith(GameObject other) {
+        return getCollisionBox().collideWith(other.getCollisionBox());
+    }
+
+    @Override
+    public CollisionBox getCollisionBox() {
+        return new CollisionBox(new Rectangle(position.intX(), position.intY(),
+                size.getWidth(), size.getHeight()));
     }
 
     @Override
