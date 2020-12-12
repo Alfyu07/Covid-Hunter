@@ -19,11 +19,14 @@ import java.util.List;
 public abstract class UIContainer extends UIComponent{
 
     protected Color backgroundColor;
-
     protected List<UIComponent> child;
+    protected Alignment alignment;
+    protected Size windowSize;
 
-    public UIContainer() {
+    public UIContainer(Size windowSize) {
         super();
+        this.windowSize = windowSize;
+        alignment = new Alignment(Alignment.Position.CENTER, Alignment.Position.END);
         this.backgroundColor = Color.red;
         margin = new Spacing(5);
         padding = new Spacing(5);
@@ -33,6 +36,7 @@ public abstract class UIContainer extends UIComponent{
     }
 
     protected abstract Size calculateContentSize();
+
     protected abstract void calculatedContentPosition();
     private void calculateSize(){
         Size calculatedContentSize = calculateContentSize();
@@ -40,10 +44,23 @@ public abstract class UIContainer extends UIComponent{
                 padding.getVertical() + calculatedContentSize.getHeight());
     }
     private void calculatePosition(){
-        position = new Position(margin.getLeft(), margin.getTop());
+        int x = padding.getLeft();
+        if(alignment.getHorizontal().equals(Alignment.Position.CENTER)){
+            x = windowSize.getWidth() / 2 - size.getWidth() / 2;
+        }
+        if(alignment.getHorizontal().equals(Alignment.Position.END)){
+            x = windowSize.getWidth() - size.getWidth() - margin.getRight();
+        }
+        int y = padding.getTop();
+        if(alignment.getVertical().equals(Alignment.Position.CENTER)){
+            y = windowSize.getHeight() / 2 - size.getHeight() / 2;
+        }
+        if(alignment.getVertical().equals(Alignment.Position.END)){
+            y = windowSize.getHeight() - size.getHeight() - margin.getBottom();
+        }
+        this.position = new Position(x, y);
         calculatedContentPosition();
     }
-
     @Override
     public Image getSprite() {
         BufferedImage Image = (BufferedImage) ImageUtils.createCompatibleImage(size,ImageUtils.ALPHA_BIT_MASKED);
@@ -79,5 +96,9 @@ public abstract class UIContainer extends UIComponent{
 
     public void setBackgroundColor(Color color){
         backgroundColor = color;
+    }
+
+    public void setAlignment(Alignment alignment) {
+        this.alignment = alignment;
     }
 }

@@ -19,15 +19,11 @@ public class GameState extends State{
         super(windowSize, input);
         gameMap = new GameMap(new Size(20,20) ,spriteLibrary);
         initializeCharacter();
-        initialzeUI();
+        initialzeUI(windowSize);
     }
 
-    private void initialzeUI() {
-        UIContainer container = new VerticalContainer();
-        container.setPadding(new Spacing(5));
-        container.setBackgroundColor(new Color(0,0,0,0));
-        container.addUIComponent(new UIText("Hello Wahyu"));
-        uiContainers.add(container);
+    private void initialzeUI(Size windowSize) {
+
     }
 
     private void initializeCharacter() {
