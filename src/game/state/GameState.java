@@ -9,8 +9,12 @@ import entities.action.Cough;
 import entities.effect.Sick;
 import input.Input;
 import map.GameMap;
+import ui.HorizontalContainer;
 import ui.Spacing;
 import ui.UIContainer;
+import ui.VerticalContainer;
+
+import java.awt.*;
 
 public class GameState extends State{
 
@@ -22,9 +26,12 @@ public class GameState extends State{
     }
 
     private void initialzeUI() {
-        UIContainer container = new UIContainer();
+        UIContainer container = new VerticalContainer();
         container.setPadding(new Spacing(50));
-        container.setMargin(new Spacing(10));
+        container.setBackgroundColor(Color.GRAY);
+        container.addUIComponent(new HorizontalContainer());
+        container.addUIComponent(new HorizontalContainer());
+        container.addUIComponent(new HorizontalContainer());
         uiContainers.add(container);
     }
 

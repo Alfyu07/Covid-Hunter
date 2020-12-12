@@ -20,7 +20,7 @@ public abstract class UIComponent {
         padding = new Spacing(5);
     }
 
-    public abstract Image getSrite();
+    public abstract Image getSprite();
     public abstract void update(State state);
 
 

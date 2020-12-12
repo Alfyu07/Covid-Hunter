@@ -5,7 +5,6 @@ import core.Position;
 import game.Game;
 import game.state.State;
 import map.GameMap;
-import map.Tile;
 
 import java.awt.Graphics;
 
@@ -20,7 +19,7 @@ public class Renderer {
     private void renderUI(State state, Graphics g) {
         state.getUiContainers().forEach(uiContainer ->
                 g.drawImage(
-                        uiContainer.getSrite(),
+                        uiContainer.getSprite(),
                         uiContainer.getPosition().intX(),
                         uiContainer.getPosition().intY(),
                         null
