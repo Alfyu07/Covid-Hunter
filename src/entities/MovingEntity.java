@@ -154,4 +154,14 @@ public abstract class MovingEntity extends GameObject {
         positionWithYApplied.applyY(motion);
         return CollisionBox.of(positionWithYApplied, collisionBoxSize).collideWith(otherBox);
     }
+
+    public boolean isAffectedBy(Class<?> clazz){
+        return effects.stream()
+                .anyMatch(effect -> clazz.isInstance(effect));
+
+    }
+
+    protected void clearEffects() {
+        this.effects.clear();
+    }
 }

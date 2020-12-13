@@ -12,7 +12,10 @@ public class Player extends MovingEntity {
 
     @Override
     protected void handleCollision(GameObject other) {
-
+        if(other instanceof NPC){
+            NPC rec = (NPC) other;
+            rec.clearEffects();
+        }
     }
 
 
