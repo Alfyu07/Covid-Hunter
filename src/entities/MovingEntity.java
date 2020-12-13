@@ -75,11 +75,6 @@ public abstract class MovingEntity extends GameObject {
     }
 
     @Override
-    public boolean collidesWith(GameObject other) {
-        return getCollisionBox().collideWith(other.getCollisionBox());
-    }
-
-    @Override
     public CollisionBox getCollisionBox() {
         Position positionWithMotion = Position.copyOf(position);
         positionWithMotion.apply(motion);
@@ -125,10 +120,6 @@ public abstract class MovingEntity extends GameObject {
         return animationManager.getSprite();
     }
 
-    public EntityController getController(){
-        return entityController;
-    }
-
     public void multiplySpeed(double multiplier){
         motion.multiply(multiplier);
     }
@@ -163,5 +154,9 @@ public abstract class MovingEntity extends GameObject {
 
     protected void clearEffects() {
         this.effects.clear();
+    }
+
+    public EntityController getController(){
+        return entityController;
     }
 }

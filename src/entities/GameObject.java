@@ -10,6 +10,8 @@ public abstract class GameObject {
     protected Position position;
     protected Size size;
 
+    protected GameObject parent;
+
     public GameObject() {
         position = new Position(50,50);
         size = new Size(50,50);
@@ -22,10 +24,18 @@ public abstract class GameObject {
     //method untuk mengambil collision box
     public abstract CollisionBox getCollisionBox();
     //cek apakah interseksi di yang lain.
-    public abstract boolean collidesWith(GameObject other);
+    public boolean collidesWith(GameObject other){
+        return getCollisionBox().collideWith(other.getCollisionBox());
+    }
 
     public Position getPosition() {
-        return position;
+        Position finalPosition = Position.copyOf(position);
+
+        if(parent != null){
+            finalPosition.add(parent.getPosition());
+        }
+
+        return finalPosition;
     }
 
     public Size getSize() {
@@ -34,5 +44,9 @@ public abstract class GameObject {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public void setParent(GameObject parent) {
+        this.parent = parent;
     }
 }

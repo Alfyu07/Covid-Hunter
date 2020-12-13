@@ -58,4 +58,9 @@ public class Position {
     public void applyY(Motion motion) {
         x += motion.getVector().getY();
     }
+
+    public void add(Position position) {
+        x+=position.getX();
+        y+= position.getY();
+    }
 }
