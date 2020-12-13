@@ -1,6 +1,5 @@
 package ai.state;
 
-import display.AITransition;
 import entities.NPC;
 import game.state.State;
 

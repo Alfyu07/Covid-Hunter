@@ -2,7 +2,6 @@ package ai.state;
 
 import controller.NPCController;
 import core.Position;
-import display.AITransition;
 import entities.NPC;
 import game.state.State;
 

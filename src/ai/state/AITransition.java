@@ -1,4 +1,4 @@
-package display;
+package ai.state;
 
 import ai.AICondition;
 import entities.NPC;
