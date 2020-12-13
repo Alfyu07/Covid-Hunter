@@ -31,13 +31,22 @@ public class GameState extends State {
         camera.focusOn(player);
 
         initializeNPCs(100);
+        makeNumberofNPCSick(10);
+    }
+
+    private void makeNumberofNPCSick(int number) {
+        getGameObjectsOfClass(NPC.class).stream()
+                .limit(number)
+                .forEach(npc -> npc.addEffect(new Sick()));
     }
 
     private void initializeNPCs(int numberOfNPCs) {
         for(int i = 0; i < numberOfNPCs; i++) {
             NPC npc = new NPC(new NPCController(), spriteLibrary);
             npc.setPosition(gameMap.getRandomPosition());
-            npc.addEffect(new Sick());
+
+            //make them all sick
+//            npc.addEffect(new Sick());
             gameObjects.add(npc);
         }
     }
