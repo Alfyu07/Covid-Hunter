@@ -17,7 +17,7 @@ public class Renderer {
     }
 
     private void renderUI(State state, Graphics g) {
-        state.getUiContainers().forEach(uiContainer ->
+        state.getUIContainers().forEach(uiContainer ->
                 g.drawImage(
                         uiContainer.getSprite(),
                         uiContainer.getPosition().intX(),

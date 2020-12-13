@@ -73,7 +73,7 @@ public abstract class State {
                 .collect(Collectors.toList());
     }
 
-    public List<UIContainer> getUiContainers() {
+    public List<UIContainer> getUIContainers() {
         return uiContainers;
     }
 

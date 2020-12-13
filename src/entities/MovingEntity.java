@@ -24,18 +24,23 @@ public abstract class MovingEntity extends GameObject {
 
     protected Optional<Action> action;
     protected Size collisionBoxSize;
+
+    protected Vector2D directionVector;
+
     public MovingEntity(EntityController entityController, SpriteLibrary spriteLibrary) {
         super();
         this.entityController = entityController;
         this.motion = new Motion(2);
         this.direction = Direction.S;
+        this.directionVector = new Vector2D(0,0);
+
         this.animationManager = new AnimationManager(spriteLibrary.getUnit("matt"));
 
         effects = new ArrayList<>();
         action = Optional.empty();
         this.collisionBoxSize = new Size(16,32);
         this.renderOffset = new Position(size.getWidth() /2, size.getHeight() - 12);
-
+        this.collisionBoxOffset = new Position(collisionBoxSize.getWidth()/2, collisionBoxSize.getHeight());
     }
 
     @Override
@@ -58,9 +63,9 @@ public abstract class MovingEntity extends GameObject {
 
     protected void handleCollisions(State state){
         state.getCollidingGameObjects(this).forEach(this::handleCollision);
+
     }
     protected abstract void handleCollision(GameObject other);
-
 
     protected void handleMotion(){
         if(!action.isPresent()){
@@ -76,14 +81,32 @@ public abstract class MovingEntity extends GameObject {
         }
     }
 
+    protected void decideAnimation(){
+        if(action.isPresent()){
+            animationManager.playAnimation(action.get().getAnimationName());
+        }else if(motion.isMoving()){
+            animationManager.playAnimation("walk");
+        }else{
+            animationManager.playAnimation("stand");
+        }
+    }
+
+    protected void manageDirection(){
+        if(motion.isMoving()){
+            this.direction = Direction.fronMotion(motion);
+            this.directionVector = motion.getDirection();
+        }
+    }
+
     @Override
     public CollisionBox getCollisionBox() {
         Position positionWithMotion = Position.copyOf(getPosition());
         positionWithMotion.apply(motion);
+        positionWithMotion.substract(collisionBoxOffset);
         return new CollisionBox(
                 new Rectangle(
-                    positionWithMotion.intX() - collisionBoxSize.getWidth() /2 ,
-                    positionWithMotion.intY() - collisionBoxSize.getHeight(),
+                    positionWithMotion.intX(),
+                    positionWithMotion.intY(),
                     collisionBoxSize.getWidth(),
                     collisionBoxSize.getHeight()
                 )
@@ -101,25 +124,10 @@ public abstract class MovingEntity extends GameObject {
         }
     }
 
-    protected void decideAnimation(){
-        if(action.isPresent()){
-            animationManager.playAnimation(action.get().getAnimationName());
-        }else if(motion.isMoving()){
-            animationManager.playAnimation("walk");
-        }else{
-            animationManager.playAnimation("stand");
-        }
-    }
-
-    protected void manageDirection(){
-        if(motion.isMoving()){
-            this.direction = Direction.fronMotion(motion);
-        }
-    }
-
     @Override
     public Image getSprite() {
         return animationManager.getSprite();
+
     }
 
     public void multiplySpeed(double multiplier){
@@ -138,6 +146,7 @@ public abstract class MovingEntity extends GameObject {
         CollisionBox otherBox = other.getCollisionBox();
         Position positionWithXApplied = Position.copyOf(position);
         positionWithXApplied.applyX(motion);
+        positionWithXApplied.substract(collisionBoxOffset);
         return CollisionBox.of(positionWithXApplied, collisionBoxSize).collideWith(otherBox);
     }
 
@@ -145,6 +154,7 @@ public abstract class MovingEntity extends GameObject {
         CollisionBox otherBox = other.getCollisionBox();
         Position positionWithYApplied = Position.copyOf(position);
         positionWithYApplied.applyY(motion);
+        positionWithYApplied.substract(collisionBoxOffset);
         return CollisionBox.of(positionWithYApplied, collisionBoxSize).collideWith(otherBox);
     }
 
@@ -160,5 +170,12 @@ public abstract class MovingEntity extends GameObject {
 
     public EntityController getController(){
         return entityController;
+    }
+    public boolean isFacing(Position other){
+        Vector2D direction = Vector2D.directionBeetweenPosition(other, getPosition());
+        double dotProduct = Vector2D.dotProduct(direction, directionVector);
+
+        return dotProduct > 0;
+        //kalo dotproduct di atas 0 maka target di depan player
     }
 }

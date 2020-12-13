@@ -1,6 +1,7 @@
 package core;
 
 public class Position {
+
     public static int RANGE = 5;
 
     private double x, y;
@@ -62,5 +63,17 @@ public class Position {
     public void add(Position position) {
         x+=position.getX();
         y+= position.getY();
+    }
+
+    public void substract(Position position) {
+        x -= position.getX();
+        y -= position.getY();
+    }
+
+    public double distanceTo(Position other){
+        double deltaX = this.getX() - other.getX();
+        double deltaY = this.getY() - other.getY();
+
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 }
