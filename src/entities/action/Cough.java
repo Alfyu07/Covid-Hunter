@@ -13,12 +13,12 @@ public class Cough extends Action{
 
     private int lifeSpan; //action lifespan
     private Size spreadAreaSize;
-    private double risk;
+    private double chanceToSick;
 
     public Cough(){
         lifeSpan = GameLoop.UPDATES_PER_SECOND;
         spreadAreaSize = new Size(2 * Game.SPRITE_SIZE, 2 * Game.SPRITE_SIZE);
-        risk = 0.1;
+        chanceToSick = 0.1;
     }
     @Override
     public void update(State state, MovingEntity entity) {
@@ -31,10 +31,11 @@ public class Cough extends Action{
 
             state.getGameObjectsOfClass(MovingEntity.class).stream()
                     .filter(movingEntity -> movingEntity.getCollisionBox().collideWith(spreadArea))
+                    .filter(movingEntity -> !movingEntity.isAffectedBy(Sick.class))
                     .forEach(movingEntity -> {
                         double fallOut = Math.random();
 
-                        if(fallOut < risk){
+                        if(fallOut < chanceToSick){
                             movingEntity.addEffect(new Sick());
                         }
                     });

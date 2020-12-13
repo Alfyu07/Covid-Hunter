@@ -2,12 +2,28 @@ package game.settings;
 
 public class GameSetting {
     private boolean debugMode;
-
+    private double gameSpeedMultiplier;
     public GameSetting(boolean debugMode) {
         this.debugMode = debugMode;
+        gameSpeedMultiplier = 1;
     }
 
     public boolean isDebugMode() {
         return debugMode;
+    }
+
+    public void toggleDebugMode() {
+        debugMode = !debugMode;
+    }
+    public void increaseGameSpeed(){
+        gameSpeedMultiplier +=0.25;
+    }
+
+    public void decreaseGameSpeed(){
+        gameSpeedMultiplier -= 0.25;
+    }
+
+    public double getGameSpeedMultiplier() {
+        return gameSpeedMultiplier;
     }
 }

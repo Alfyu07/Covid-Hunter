@@ -1,6 +1,6 @@
 package entities;
 
-import controller.Controller;
+import controller.EntityController;
 import core.*;
 import entities.action.Action;
 import entities.effect.Effect;
@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public abstract class MovingEntity extends GameObject {
 
-    protected Controller controller;
+    protected EntityController entityController;
     protected Motion motion;
     protected AnimationManager animationManager;
     protected Direction direction;
@@ -24,9 +24,9 @@ public abstract class MovingEntity extends GameObject {
 
     protected Optional<Action> action;
     protected Size collisionBoxSize;
-    public MovingEntity(Controller controller, SpriteLibrary spriteLibrary) {
+    public MovingEntity(EntityController entityController, SpriteLibrary spriteLibrary) {
         super();
-        this.controller = controller;
+        this.entityController = entityController;
         this.motion = new Motion(2);
         this.direction = Direction.S;
         this.animationManager = new AnimationManager(spriteLibrary.getUnit("matt"));
@@ -62,7 +62,7 @@ public abstract class MovingEntity extends GameObject {
 
     protected void handleMotion(){
         if(!action.isPresent()){
-            motion.update(controller);
+            motion.update(entityController);
         }else{
             motion.stop(true, true);
         }
@@ -125,8 +125,8 @@ public abstract class MovingEntity extends GameObject {
         return animationManager.getSprite();
     }
 
-    public Controller getController(){
-        return controller;
+    public EntityController getController(){
+        return entityController;
     }
 
     public void multiplySpeed(double multiplier){

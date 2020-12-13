@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 * class untuk mengatur control player.
 * */
 
-public class PlayerController implements Controller {
+public class PlayerController implements EntityController {
 
     private Input input;
 
@@ -16,21 +16,21 @@ public class PlayerController implements Controller {
 
     @Override
     public boolean isRequestingUp() {
-        return input.isPressed(KeyEvent.VK_W);
+        return input.isCurrentlyPressed(KeyEvent.VK_W);
     }
 
     @Override
     public boolean isRequestingDown() {
-        return input.isPressed(KeyEvent.VK_S);
+        return input.isCurrentlyPressed(KeyEvent.VK_S);
     }
 
     @Override
     public boolean isRequestingLeft() {
-        return input.isPressed(KeyEvent.VK_A);
+        return input.isCurrentlyPressed(KeyEvent.VK_A);
     }
 
     @Override
     public boolean isRequestingRight() {
-        return input.isPressed(KeyEvent.VK_D);
+        return input.isCurrentlyPressed(KeyEvent.VK_D);
     }
 }

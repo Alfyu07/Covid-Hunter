@@ -2,7 +2,7 @@ package controller;
 /*
 * class interface untuk movement entity
 * */
-public interface Controller {
+public interface EntityController {
     boolean isRequestingUp();
     boolean isRequestingDown();
     boolean isRequestingLeft();

@@ -1,6 +1,6 @@
 package core;
 
-import controller.Controller;
+import controller.EntityController;
 
 /*
 * class yang menyimpan logic movement player
@@ -16,20 +16,20 @@ public class Motion {
         this.vector = new Vector2D(0,0);
     }
 
-    public void update(Controller controller){
+    public void update(EntityController entityController){
         int deltaX = 0;
         int deltaY = 0;
 
-        if(controller.isRequestingUp()){
+        if(entityController.isRequestingUp()){
             deltaY--;
         }
-        if(controller.isRequestingDown()){
+        if(entityController.isRequestingDown()){
             deltaY++;
         }
-        if(controller.isRequestingLeft()){
+        if(entityController.isRequestingLeft()){
             deltaX--;
         }
-        if(controller.isRequestingRight()){
+        if(entityController.isRequestingRight()){
             deltaX++;
         }
 
