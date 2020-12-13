@@ -94,4 +94,8 @@ public class Humanoid extends MovingEntity {
 
     @Override
     protected void handleCollision(GameObject other) {}
+
+    public List<Effect> getEffects() {
+        return effects;
+    }
 }

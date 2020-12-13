@@ -6,6 +6,8 @@ import core.Size;
 import entities.NPC;
 import entities.Player;
 import entities.SelectionCircle;
+import entities.humanoid.Humanoid;
+import entities.humanoid.effect.Isolated;
 import entities.humanoid.effect.Sick;
 import game.ui.UIGameTime;
 import game.ui.UISicknessStatistics;
@@ -49,5 +51,22 @@ public class GameState extends State {
 
             gameObjects.add(npc);
         }
+    }
+
+    public long getNumberOfSick(){
+        return getGameObjectsOfClass(Humanoid.class).stream()
+                .filter(humanoid -> humanoid.isAffectedBy(Sick.class) && !humanoid.isAffectedBy(Isolated.class))
+                .count();
+    }
+
+    public long getNumberOfIsolated(){
+        return getGameObjectsOfClass(Humanoid.class).stream()
+                .filter(humanoid -> humanoid.isAffectedBy(Sick.class) && humanoid.isAffectedBy(Isolated.class))
+                .count();
+    }
+    public long getNumberOfHealthy(){
+        return getGameObjectsOfClass(Humanoid.class).stream()
+                .filter(humanoid -> !humanoid.isAffectedBy(Sick.class))
+                .count();
     }
 }

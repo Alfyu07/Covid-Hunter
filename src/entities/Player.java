@@ -3,7 +3,7 @@ package entities;
 import controller.EntityController;
 import entities.humanoid.Humanoid;
 import entities.humanoid.action.BlowBubble;
-import entities.humanoid.effect.Untargetable;
+import entities.humanoid.effect.Isolated;
 import game.Game;
 import game.state.State;
 import gfx.SpriteLibrary;
@@ -59,7 +59,7 @@ public class Player extends Humanoid {
         return state.getGameObjectsOfClass(NPC.class).stream()
                 .filter(npc -> getPosition().distanceTo(npc.getPosition()) <targetRange)
                 .filter(npc -> isFacing(npc.getPosition()))
-                .filter(npc -> !npc.isAffectedBy(Untargetable.class))
+                .filter(npc -> !npc.isAffectedBy(Isolated.class))
                 .min(Comparator.comparingDouble(npc -> position.distanceTo(npc.getPosition())));
     }
 

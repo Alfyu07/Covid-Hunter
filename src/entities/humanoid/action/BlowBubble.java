@@ -3,7 +3,7 @@ package entities.humanoid.action;
 import controller.NPCController;
 import entities.Bubble;
 import entities.humanoid.Humanoid;
-import entities.humanoid.effect.Untargetable;
+import entities.humanoid.effect.Isolated;
 import game.GameLoop;
 import game.state.State;
 
@@ -25,6 +25,8 @@ public class BlowBubble extends Action {
 
         if(bubble == null) {
             bubbleTarget(state);
+        }else{
+            bubble.hold();
         }
 
         if(isDone()) {
@@ -35,7 +37,7 @@ public class BlowBubble extends Action {
 
     private void bubbleTarget(State state) {
         target.perform(new Levitate());
-        target.addEffect(new Untargetable());
+        target.addEffect(new Isolated());
 
         bubble = new Bubble(new NPCController(), state.getSpriteLibrary());
         bubble.insert(target);
