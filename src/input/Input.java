@@ -1,12 +1,17 @@
 package input;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import core.Position;
+
+import java.awt.event.*;
 /*
     class untuk mengatur kondisi masukan pada keyboard,
  */
 
-public class Input implements KeyListener {
+public class Input implements KeyListener , MouseListener, MouseMotionListener {
+
+    private Position mousePosition;
+    private boolean mouseClicked;
+    private boolean mousePressed;
 
     private boolean[] currentlyPressed;
     private boolean[] pressed;
@@ -14,6 +19,7 @@ public class Input implements KeyListener {
     public Input(){
         currentlyPressed = new boolean[256];
         pressed = new boolean[256];
+        mousePosition = new Position(0,0);
     }
 
     public boolean isPressed(int keyCode){
@@ -42,5 +48,53 @@ public class Input implements KeyListener {
     public void keyReleased(KeyEvent e) {
         currentlyPressed[e.getKeyCode()] = false;
         pressed[e.getKeyCode()] = false;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {}
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        mousePressed = true;
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        mouseClicked = true;
+        mousePressed = false;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        mousePosition = new Position(e.getPoint().getX(), e.getPoint().getY());
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        mousePosition = new Position(e.getPoint().getX(), e.getPoint().getY());
+
+    }
+
+    public void clearMouseCLick(){
+        mouseClicked = false;
+    }
+
+
+    public Position getMousePosition() {
+        return mousePosition;
+    }
+
+    public boolean isMouseClicked() {
+        return mouseClicked;
+    }
+
+    public boolean isMousePressed() {
+        return mousePressed;
     }
 }

@@ -28,8 +28,11 @@ public class Display extends JFrame {
         canvas.setPreferredSize(new Dimension(width, height));
         canvas.setFocusable(false);
 
+        canvas.addMouseListener(input);
+        canvas.addMouseMotionListener(input);
         add(canvas);
         addKeyListener(input);
+
         pack();
         canvas.createBufferStrategy(3);
 
