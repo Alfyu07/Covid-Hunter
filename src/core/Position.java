@@ -65,7 +65,7 @@ public class Position {
         y+= position.getY();
     }
 
-    public void substract(Position position) {
+    public void subtract(Position position) {
         x -= position.getX();
         y -= position.getY();
     }

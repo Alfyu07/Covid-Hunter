@@ -3,7 +3,6 @@ package entities.humanoid.action;
 import core.CollisionBox;
 import core.Position;
 import core.Size;
-import entities.MovingEntity;
 import entities.humanoid.Humanoid;
 import entities.humanoid.effect.Sick;
 import game.Game;
@@ -31,7 +30,7 @@ public class Cough extends Action{
             CollisionBox spreadArea = CollisionBox.of(spreadAreaPosition, spreadAreaSize);
 
             state.getGameObjectsOfClass(Humanoid.class).stream()
-                    .filter(humanoid -> humanoid.getCollisionBox().collideWith(spreadArea))
+                    .filter(humanoid -> humanoid.getCollisionBox().collidesWith(spreadArea))
                     .filter(humanoid -> !humanoid.isAffectedBy(Sick.class))
                     .forEach(humanoid -> {
                         double fallOut = Math.random();

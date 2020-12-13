@@ -37,9 +37,15 @@ public abstract class State {
     public void update() {
         time.update();
         sortObjectsByPosition();
-        gameObjects.forEach(gameObject -> gameObject.update(this));
+        updateGameObject();
         uiContainers.forEach(uiContainer -> uiContainer.update(this));
         camera.update(this);
+    }
+
+    private void updateGameObject() {
+        for(int i = 0; i<gameObjects.size(); i++){
+            gameObjects.get(i).update(this);
+        }
     }
 
     private void sortObjectsByPosition() {
@@ -82,5 +88,13 @@ public abstract class State {
                 .filter(gameObject -> clazz.isInstance(gameObject))
                 .map(gameObject -> (T) gameObject)
                 .collect(Collectors.toList());
+    }
+
+    public SpriteLibrary getSpriteLibrary() {
+        return spriteLibrary;
+    }
+
+    public void spawn(GameObject gameObject) {
+        gameObjects.add(gameObject);
     }
 }

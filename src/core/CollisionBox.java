@@ -27,7 +27,7 @@ public class CollisionBox {
     }
 
     //apakah bertabrakan dengan object lain (saling interseksi)
-    public boolean collideWith(CollisionBox other){
+    public boolean collidesWith(CollisionBox other){
         return bounds.intersects(other.bounds);
     }
 

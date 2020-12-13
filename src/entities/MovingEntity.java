@@ -16,23 +16,22 @@ public abstract class MovingEntity extends GameObject {
     protected AnimationManager animationManager;
     protected Direction direction;
 
-    protected Size collisionBoxSize;
-
     protected Vector2D directionVector;
+
+    protected Size collisionBoxSize;
 
     public MovingEntity(EntityController entityController, SpriteLibrary spriteLibrary) {
         super();
         this.entityController = entityController;
         this.motion = new Motion(2);
         this.direction = Direction.S;
-        this.directionVector = new Vector2D(0,0);
-
+        this.directionVector = new Vector2D(0, 0);
         this.animationManager = new AnimationManager(spriteLibrary.getSpriteSet("matt"));
-
+        this.collisionBoxSize = new Size(size.getWidth(), size.getHeight());
     }
 
     @Override
-    public void update(State state){
+    public void update(State state) {
         motion.update(entityController);
         handleMotion();
         animationManager.update(direction);
@@ -44,22 +43,19 @@ public abstract class MovingEntity extends GameObject {
         position.apply(motion);
     }
 
-    protected void handleCollisions(State state){
+    private void handleCollisions(State state) {
         state.getCollidingGameObjects(this).forEach(this::handleCollision);
-
     }
+
     protected abstract void handleCollision(GameObject other);
 
     protected abstract void handleMotion();
 
-
-
-
     protected abstract String decideAnimation();
 
-    protected void manageDirection(){
-        if(motion.isMoving()){
-            this.direction = Direction.fronMotion(motion);
+    private void manageDirection() {
+        if(motion.isMoving()) {
+            this.direction = Direction.fromMotion(motion);
             this.directionVector = motion.getDirection();
         }
     }
@@ -68,58 +64,49 @@ public abstract class MovingEntity extends GameObject {
     public CollisionBox getCollisionBox() {
         Position positionWithMotion = Position.copyOf(getPosition());
         positionWithMotion.apply(motion);
-        positionWithMotion.substract(collisionBoxOffset);
+        positionWithMotion.subtract(collisionBoxOffset);
+
         return new CollisionBox(
                 new Rectangle(
-                    positionWithMotion.intX(),
-                    positionWithMotion.intY(),
-                    collisionBoxSize.getWidth(),
-                    collisionBoxSize.getHeight()
+                        positionWithMotion.intX(),
+                        positionWithMotion.intY(),
+                        collisionBoxSize.getWidth(),
+                        collisionBoxSize.getHeight()
                 )
         );
     }
 
-
-
-
     @Override
     public Image getSprite() {
         return animationManager.getSprite();
-
     }
 
-    public void multiplySpeed(double multiplier){
-        motion.multiply(multiplier);
+    public EntityController getEntityController() {
+        return entityController;
     }
 
-
-
-    protected boolean willCollideX(GameObject other){
+    public boolean willCollideX(GameObject other) {
         CollisionBox otherBox = other.getCollisionBox();
         Position positionWithXApplied = Position.copyOf(position);
         positionWithXApplied.applyX(motion);
-        positionWithXApplied.substract(collisionBoxOffset);
-        return CollisionBox.of(positionWithXApplied, collisionBoxSize).collideWith(otherBox);
+        positionWithXApplied.subtract(collisionBoxOffset);
+
+        return CollisionBox.of(positionWithXApplied, collisionBoxSize).collidesWith(otherBox);
     }
 
-    protected boolean willCollideY(GameObject other){
+    public boolean willCollideY(GameObject other) {
         CollisionBox otherBox = other.getCollisionBox();
         Position positionWithYApplied = Position.copyOf(position);
         positionWithYApplied.applyY(motion);
-        positionWithYApplied.substract(collisionBoxOffset);
-        return CollisionBox.of(positionWithYApplied, collisionBoxSize).collideWith(otherBox);
+        positionWithYApplied.subtract(collisionBoxOffset);
+
+        return CollisionBox.of(positionWithYApplied, collisionBoxSize).collidesWith(otherBox);
     }
 
-
-
-    public EntityController getController(){
-        return entityController;
-    }
-    public boolean isFacing(Position other){
-        Vector2D direction = Vector2D.directionBeetweenPosition(other, getPosition());
+    public boolean isFacing(Position other) {
+        Vector2D direction = Vector2D.directionBetweenPositions(other, getPosition());
         double dotProduct = Vector2D.dotProduct(direction, directionVector);
 
         return dotProduct > 0;
-        //kalo dotproduct di atas 0 maka target di depan player
     }
 }

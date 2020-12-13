@@ -31,7 +31,7 @@ public class Vector2D {
         return y;
     }
 
-    public static Vector2D directionBeetweenPosition(Position start, Position end){
+    public static Vector2D directionBetweenPositions(Position start, Position end){
         Vector2D direction = new Vector2D(start.getX() - end.getX(), start.getY() - end.getY());
         direction.normalize();
 

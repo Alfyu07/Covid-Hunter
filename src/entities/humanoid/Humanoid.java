@@ -21,17 +21,16 @@ public class Humanoid extends MovingEntity {
     public Humanoid(EntityController entityController, SpriteLibrary spriteLibrary) {
         super(entityController, spriteLibrary);
 
-
         effects = new ArrayList<>();
         action = Optional.empty();
 
-        this.collisionBoxSize = new Size(16,32);
-        this.renderOffset = new Position(size.getWidth() /2, size.getHeight() - 12);
-        this.collisionBoxOffset = new Position(collisionBoxSize.getWidth()/2, collisionBoxSize.getHeight());
+        this.collisionBoxSize = new Size(16, 28);
+        this.renderOffset = new Position(size.getWidth() / 2, size.getHeight() - 12);
+        this.collisionBoxOffset = new Position(collisionBoxSize.getWidth() / 2, collisionBoxSize.getHeight());
     }
 
     @Override
-    public void update(State state){
+    public void update(State state) {
         super.update(state);
         handleAction(state);
         effects.forEach(effect -> effect.update(state, this));
@@ -39,45 +38,44 @@ public class Humanoid extends MovingEntity {
         cleanup();
     }
 
-    @Override
-    protected void handleCollision(GameObject other) {
-
-    }
-
-    @Override
-    protected String decideAnimation() {
-        if(action.isPresent()){
-            action.get().getAnimationName();
-        }else if(motion.isMoving()){
-           return "walk";
-        }
-        return "stand";
-    }
-    @Override
-    protected void handleMotion() {
-        if (action.isPresent()) {
-            motion.stop(true, true);
-
-        }
-    }
-
-    protected void handleAction(State state){
-        if(action.isPresent()){
-            action.get().update(state, this);
-        }
-    }
-
-    protected void cleanup(){
+    private void cleanup() {
         List.copyOf(effects).stream()
                 .filter(Effect::shouldDelete)
                 .forEach(effects::remove);
 
-        if(action.isPresent() && action.get().isDone()){
+        if(action.isPresent() && action.get().isDone()) {
             action = Optional.empty();
         }
     }
 
+    @Override
+    protected String decideAnimation() {
+        if(action.isPresent()) {
+            return action.get().getAnimationName();
+        } else if(motion.isMoving()) {
+            return "walk";
+        }
+
+        return "stand";
+    }
+
+    private void handleAction(State state) {
+        if(action.isPresent()) {
+            action.get().update(state, this);
+        }
+    }
+
+    protected void handleMotion() {
+        if(action.isPresent()) {
+            motion.stop(true, true);
+        }
+    }
+
     public void perform(Action action) {
+        if(this.action.isPresent() && !this.action.get().isInterruptable()) {
+            return;
+        }
+
         this.action = Optional.of(action);
     }
 
@@ -86,12 +84,14 @@ public class Humanoid extends MovingEntity {
     }
 
     protected void clearEffects() {
-        this.effects.clear();
+        effects.clear();
     }
 
-    public boolean isAffectedBy(Class<?> clazz){
+    public boolean isAffectedBy(Class<?> clazz) {
         return effects.stream()
                 .anyMatch(effect -> clazz.isInstance(effect));
-
     }
+
+    @Override
+    protected void handleCollision(GameObject other) {}
 }

@@ -47,7 +47,7 @@ public class SelectionCircle extends GameObject{
     @Override
     public CollisionBox getCollisionBox() {
         Position position = getPosition();
-        position.substract(collisionBoxOffset);
+        position.subtract(collisionBoxOffset);
         return CollisionBox.of(position, getSize());
 
     }

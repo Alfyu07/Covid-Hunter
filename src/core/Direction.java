@@ -16,7 +16,7 @@ public enum Direction {
         this.animationRow = animationRow;
     }
 
-    public static Direction fronMotion(Motion motion){
+    public static Direction fromMotion(Motion motion){
         double x = motion.getVector().getX();
         double y = motion.getVector().getY();
 
