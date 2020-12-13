@@ -1,6 +1,7 @@
 package entities;
 
 import controller.EntityController;
+import entities.humanoid.Humanoid;
 import game.Game;
 import game.state.State;
 import gfx.SpriteLibrary;
@@ -8,7 +9,7 @@ import gfx.SpriteLibrary;
 import java.util.Comparator;
 import java.util.Optional;
 
-public class Player extends MovingEntity {
+public class Player extends Humanoid {
 
     private NPC target;
     private double targetRange;
@@ -49,15 +50,5 @@ public class Player extends MovingEntity {
                 .filter(npc -> isFacing(npc.getPosition()))
                 .min(Comparator.comparingDouble(npc -> position.distanceTo(npc.getPosition())));
     }
-
-
-    @Override
-    protected void handleCollision(GameObject other) {
-        if(other instanceof NPC){
-            NPC rec = (NPC) other;
-            rec.clearEffects();
-        }
-    }
-
 
 }

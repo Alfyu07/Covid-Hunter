@@ -1,6 +1,6 @@
-package entities.effect;
+package entities.humanoid.effect;
 
-import entities.MovingEntity;
+import entities.humanoid.Humanoid;
 import game.GameLoop;
 import game.state.State;
 
@@ -14,9 +14,9 @@ public class SpeedUp extends Effect{
     }
 
     @Override
-    public void update(State state, MovingEntity entity) {
-        super.update(state, entity);
+    public void update(State state, Humanoid humanoid) {
+        super.update(state, humanoid);
 
-        entity.multiplySpeed(speedMultiplier);
+        humanoid.multiplySpeed(speedMultiplier);
     }
 }
