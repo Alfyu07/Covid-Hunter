@@ -2,30 +2,50 @@ package game.state;
 
 import controller.NPCController;
 import controller.PlayerController;
+import core.Condition;
 import core.Size;
 import entities.NPC;
 import entities.Player;
 import entities.SelectionCircle;
-import entities.humanoid.Humanoid;
 import entities.humanoid.effect.Isolated;
 import entities.humanoid.effect.Sick;
 import game.ui.UIGameTime;
 import game.ui.UISicknessStatistics;
 import input.Input;
 import map.GameMap;
+import ui.Alignment;
+import ui.UIText;
+import ui.VerticalContainer;
+
+import java.util.List;
 
 public class GameState extends State {
+
+    private List<Condition> victoryConditions;
+    private List<Condition> defeatConditions;
+    private boolean playing;
 
     public GameState(Size windowSize, Input input) {
         super(windowSize, input);
         gameMap = new GameMap(new Size(20, 20), spriteLibrary);
+        playing = true;
         initializeCharacters();
         initializeUI(windowSize);
+        initializeConditions();
     }
 
-    private void initializeUI(Size windowSize) {
-        uiContainers.add(new UIGameTime(windowSize));
-        uiContainers.add(new UISicknessStatistics(windowSize));
+    @Override
+    public void update() {
+        super.update();
+
+        if(playing){
+            if(victoryConditions.stream().allMatch(condition -> condition.isMet())){
+                win();
+            }
+            if(defeatConditions.stream().allMatch(condition -> condition.isMet())){
+                lose();
+            }
+        }
     }
 
     private void initializeCharacters() {
@@ -36,6 +56,29 @@ public class GameState extends State {
         gameObjects.add(circle);
         initializeNPCs(100);
         makeNumberofNPCSick(10);
+    }
+
+    private void initializeUI(Size windowSize) {
+        uiContainers.add(new UIGameTime(windowSize));
+        uiContainers.add(new UISicknessStatistics(windowSize));
+    }
+    private void initializeConditions() {
+        victoryConditions = List.of(()-> getNumberOfSick() == 0);
+        defeatConditions = List.of(() -> (float) getNumberOfSick() / getNumberOfNPCs() > 0.25);
+    }
+
+    private void win(){
+        VerticalContainer winContainer = new VerticalContainer(camera.getSize());
+        winContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.CENTER));
+        winContainer.addUIComponent(new UIText("VICTORY"));
+        uiContainers.add(winContainer);
+    }
+
+    private void lose(){
+        VerticalContainer winContainer = new VerticalContainer(camera.getSize());
+        winContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.CENTER));
+        winContainer.addUIComponent(new UIText("DEFEAT"));
+        uiContainers.add(winContainer);
     }
 
     private void makeNumberofNPCSick(int number) {
@@ -54,19 +97,18 @@ public class GameState extends State {
     }
 
     public long getNumberOfSick(){
-        return getGameObjectsOfClass(Humanoid.class).stream()
-                .filter(humanoid -> humanoid.isAffectedBy(Sick.class) && !humanoid.isAffectedBy(Isolated.class))
+        return getGameObjectsOfClass(NPC.class).stream()
+                .filter(npc -> npc.isAffectedBy(Sick.class) && !npc.isAffectedBy(Isolated.class))
                 .count();
     }
 
     public long getNumberOfIsolated(){
-        return getGameObjectsOfClass(Humanoid.class).stream()
-                .filter(humanoid -> humanoid.isAffectedBy(Sick.class) && humanoid.isAffectedBy(Isolated.class))
+        return getGameObjectsOfClass(NPC.class).stream()
+                .filter(npc -> npc.isAffectedBy(Sick.class) && npc.isAffectedBy(Isolated.class))
                 .count();
     }
-    public long getNumberOfHealthy(){
-        return getGameObjectsOfClass(Humanoid.class).stream()
-                .filter(humanoid -> !humanoid.isAffectedBy(Sick.class))
+    public long getNumberOfNPCs(){
+        return getGameObjectsOfClass(NPC.class).stream()
                 .count();
     }
 }

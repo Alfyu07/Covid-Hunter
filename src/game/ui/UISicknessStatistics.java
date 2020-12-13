@@ -34,7 +34,7 @@ public class UISicknessStatistics extends HorizontalContainer {
         if(state instanceof GameState){
             GameState gameState = (GameState) state;
             numberOfSick.setText(String.format("%d (%d)", gameState.getNumberOfSick(), gameState.getNumberOfIsolated()));
-            numberOfHealthy.setText(String.valueOf(gameState.getNumberOfHealthy()));
+            numberOfHealthy.setText(String.valueOf(gameState.getNumberOfNPCs()));
         }
 
     }
