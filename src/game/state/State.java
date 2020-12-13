@@ -18,15 +18,14 @@ import java.util.stream.Collectors;
 public abstract class State {
 
     protected GameMap gameMap;
-    protected List<GameObject> gameObjects; //player sama enemy
+    protected List<GameObject> gameObjects;
     protected List<UIContainer> uiContainers;
     protected SpriteLibrary spriteLibrary;
     protected Input input;
     protected Camera camera;
-
     protected Time time;
 
-    public State(Size windowSize, Input input){
+    public State(Size windowSize, Input input) {
         this.input = input;
         gameObjects = new ArrayList<>();
         uiContainers = new ArrayList<>();
@@ -34,15 +33,21 @@ public abstract class State {
         camera = new Camera(windowSize);
         time = new Time();
     }
-    public void update(){
-        sortObjecByPosition();
+
+    public void update() {
+        time.update();
+        sortObjectsByPosition();
         gameObjects.forEach(gameObject -> gameObject.update(this));
         uiContainers.forEach(uiContainer -> uiContainer.update(this));
         camera.update(this);
     }
 
-    protected void sortObjecByPosition(){
+    private void sortObjectsByPosition() {
         gameObjects.sort(Comparator.comparing(gameObject -> gameObject.getPosition().getY()));
+    }
+
+    public List<GameObject> getGameObjects() {
+        return gameObjects;
     }
 
     public GameMap getGameMap() {
@@ -57,20 +62,14 @@ public abstract class State {
         return time;
     }
 
-    public Position getRandomPotition(){
+    public Position getRandomPosition() {
         return gameMap.getRandomPosition();
     }
 
-    public List<GameObject> getCollidingGameObjects(GameObject gameObject){
-
-        //cek jika di list object ada yang saling collide dengan object lain dan return object2 yang berkolisi tersbut
+    public List<GameObject> getCollidingGameObjects(GameObject gameObject) {
         return gameObjects.stream()
                 .filter(other -> other.collidesWith(gameObject))
                 .collect(Collectors.toList());
-    }
-
-    public List<GameObject> getGameObjects() {
-        return gameObjects;
     }
 
     public List<UIContainer> getUiContainers() {
