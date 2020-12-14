@@ -7,10 +7,12 @@ import entities.humanoid.Humanoid;
 import entities.humanoid.action.BlowBubble;
 import entities.humanoid.action.WalkInDirection;
 import entities.humanoid.effect.Isolated;
+import entities.humanoid.effect.Sick;
 import game.Game;
 import gfx.AnimationManager;
 import state.State;
 import gfx.SpriteLibrary;
+import state.ingame.GameState;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -43,6 +45,10 @@ public class Player extends Humanoid {
     private void handleInput(State state){
         if(entityController.isRequestingAction()){
             if(target != null){
+                if(action.isEmpty()){
+                    GameState gameState = (GameState) state;
+                    gameState.applyToScore(target.isAffectedBy(Sick.class) ? 250 : -250);
+                }
                 perform(new BlowBubble(target));
             }
         }

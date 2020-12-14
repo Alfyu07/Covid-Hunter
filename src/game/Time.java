@@ -2,24 +2,24 @@ package game;
 
 public class Time {
 
-    private int updatesSinceStart;
+    protected int currentUpdates;
 
     public Time() {
-        this.updatesSinceStart = 0;
+        this.currentUpdates = 0;
     }
 
-    public int getUpdatesFromSeconds(int seconds) {
-        return seconds * GameLoop.UPDATES_PER_SECOND;
+    public int getUpdatesFromSeconds(double seconds) {
+        return (int)  Math.round(seconds * GameLoop.UPDATES_PER_SECOND);
     }
 
     public void update() {
-        updatesSinceStart++;
+        currentUpdates++;
     }
 
     public String getFormattedTime() {
         StringBuilder stringBuilder = new StringBuilder();
-        int minutes = updatesSinceStart / GameLoop.UPDATES_PER_SECOND / 60;
-        int seconds = updatesSinceStart / GameLoop.UPDATES_PER_SECOND % 60;
+        int minutes = currentUpdates / GameLoop.UPDATES_PER_SECOND / 60;
+        int seconds = currentUpdates / GameLoop.UPDATES_PER_SECOND % 60;
 
         if(minutes < 10) {
             stringBuilder.append(0);
@@ -32,5 +32,10 @@ public class Time {
         }
         stringBuilder.append(seconds);
         return stringBuilder.toString();
+    }
+
+
+    public int asSeconds() {
+        return currentUpdates / GameLoop.UPDATES_PER_SECOND;
     }
 }

@@ -10,8 +10,10 @@ import entities.SelectionCircle;
 import entities.humanoid.effect.Isolated;
 import entities.humanoid.effect.Sick;
 import game.Game;
+import game.Timer;
 import game.settings.GameSettings;
 import state.ingame.ui.UIGameTime;
+import state.ingame.ui.UIScore;
 import state.ingame.ui.UISicknessStatistics;
 import input.Input;
 import map.GameMap;
@@ -31,11 +33,15 @@ public class GameState extends State {
     private List<Condition> victoryConditions;
     private List<Condition> defeatConditions;
     private boolean playing;
+    private Timer gameTimer;
+    private int score;
 
     public GameState(Size windowSize, Input input, GameSettings gameSettings) {
         super(windowSize, input, gameSettings);
         gameMap = new GameMap(new Size(15, 10), spriteLibrary);
         playing = true;
+        gameTimer = new Timer(120, this::lose);
+
         initializeCharacters();
         initializeUI(windowSize);
         initializeConditions();
@@ -52,6 +58,7 @@ public class GameState extends State {
     private void initializeUI(Size windowSize) {
         uiContainers.add(new UIGameTime(windowSize));
         uiContainers.add(new UISicknessStatistics(windowSize));
+        uiContainers.add(new UIScore(windowSize));
     }
 
     private void initializeCharacters() {
@@ -83,6 +90,7 @@ public class GameState extends State {
     @Override
     public void update(Game game) {
         super.update(game);
+        gameTimer.update();
 
         if(playing) {
             if(victoryConditions.stream().allMatch(Condition::isMet)) {
@@ -98,18 +106,10 @@ public class GameState extends State {
     private void lose() {
         playing = false;
 
-        VerticalContainer loseContainer = new VerticalContainer(camera.getSize());
-        loseContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.CENTER));
-        loseContainer.addUIComponent(new UIText("DEFEAT"));
-        uiContainers.add(loseContainer);
-    }
-
-    private void win() {
-        playing = false;
+        //Create UI
         VerticalContainer winContainer = new VerticalContainer(camera.getSize());
         winContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.START));
-
-        UIText victory = new UIText("VICTORY");
+        UIText victory = new UIText("DEFEAT");
         victory.setMargin(new Spacing(200));
         winContainer.addUIComponent(victory);
 
@@ -120,6 +120,34 @@ public class GameState extends State {
         menuContainer.addUIComponent(new UIButton("Exit", (state) -> System.exit(0)));
         uiContainers.add(winContainer);
         uiContainers.add(menuContainer);
+    }
+
+    private void win() {
+        playing = false;
+        applyToScore(gameTimer.asSeconds() * 100);
+
+        //Create UI
+        VerticalContainer winContainer = new VerticalContainer(camera.getSize());
+        winContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.START));
+
+        UIText victory = new UIText("VICTORY");
+        victory.setMargin(new Spacing(200,0,10,0));
+        UIText score = new UIText(String.format("YOUR SCORE : %d", getScore()));
+        score.setMargin(new Spacing(5,0,0,0));
+        winContainer.addUIComponent(victory);
+        winContainer.addUIComponent(score);
+
+        VerticalContainer menuContainer = new VerticalContainer(camera.getSize());
+        menuContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.CENTER));
+        menuContainer.setBackgroundColor(Color.DARK_GRAY);
+        menuContainer.addUIComponent(new UIButton("Menu", (state) -> state.setNextState(new MenuState(windowSize,input, gameSettings))));
+        menuContainer.addUIComponent(new UIButton("Exit", (state) -> System.exit(0)));
+        uiContainers.add(winContainer);
+        uiContainers.add(menuContainer);
+    }
+
+    public void applyToScore(int amount) {
+        score+=amount;
     }
 
     public long getNumberOfSick() {
@@ -142,6 +170,14 @@ public class GameState extends State {
 
     public long getNumberOfNPCs() {
         return getGameObjectsOfClass(NPC.class).size();
+    }
+
+    public Timer getGameTimer() {
+        return gameTimer;
+    }
+
+    public int getScore() {
+        return score;
     }
 }
 
