@@ -1,10 +1,14 @@
 package entities;
 
 import controller.EntityController;
+import core.Position;
+import core.Vector2D;
 import entities.humanoid.Humanoid;
 import entities.humanoid.action.BlowBubble;
+import entities.humanoid.action.WalkInDirection;
 import entities.humanoid.effect.Isolated;
 import game.Game;
+import gfx.AnimationManager;
 import state.State;
 import gfx.SpriteLibrary;
 
@@ -22,6 +26,10 @@ public class Player extends Humanoid {
         super(entityController, spriteLibrary);
         this.selectionCircle = selectionCircle;
         this.targetRange = Game.SPRITE_SIZE;
+        this.animationManager = new AnimationManager(spriteLibrary.getSpriteSet("matt"));
+
+        setPosition(new Position(Game.SPRITE_SIZE * 7, 0));
+        perform(new WalkInDirection(new Vector2D(0,1)));
     }
 
     @Override

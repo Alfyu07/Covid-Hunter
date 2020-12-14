@@ -34,11 +34,14 @@ public class GameState extends State {
 
     public GameState(Size windowSize, Input input, GameSettings gameSettings) {
         super(windowSize, input, gameSettings);
-        gameMap = new GameMap(new Size(20, 20), spriteLibrary);
+        gameMap = new GameMap(new Size(15, 10), spriteLibrary);
         playing = true;
         initializeCharacters();
         initializeUI(windowSize);
         initializeConditions();
+
+        audioPlayer.playMusic("/sounds/isobubbler.wav");
+
     }
 
     private void initializeConditions() {
@@ -59,8 +62,8 @@ public class GameState extends State {
 
         gameObjects.add(circle);
 
-        initializeNPCs(20);
-        makeNumberOfNPCsSick(4);
+        initializeNPCs(50);
+        makeNumberOfNPCsSick(5);
     }
 
     private void makeNumberOfNPCsSick(int number) {
@@ -114,7 +117,6 @@ public class GameState extends State {
         menuContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.CENTER));
         menuContainer.setBackgroundColor(Color.DARK_GRAY);
         menuContainer.addUIComponent(new UIButton("Menu", (state) -> state.setNextState(new MenuState(windowSize,input, gameSettings))));
-        menuContainer.addUIComponent(new UIButton("Options", (state) -> System.out.println("Button 2 pressed!")));
         menuContainer.addUIComponent(new UIButton("Exit", (state) -> System.exit(0)));
         uiContainers.add(winContainer);
         uiContainers.add(menuContainer);

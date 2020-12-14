@@ -10,11 +10,11 @@ import entities.humanoid.effect.Effect;
 import state.State;
 import gfx.SpriteLibrary;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Humanoid extends MovingEntity {
+    private static List<String> availableCharacter = new ArrayList<>(List.of("dave", "melissa","roger"));
+
     protected List<Effect> effects;
     protected Optional<Action> action;
 
@@ -24,9 +24,15 @@ public class Humanoid extends MovingEntity {
         effects = new ArrayList<>();
         action = Optional.empty();
 
+
         this.collisionBoxSize = new Size(16, 28);
         this.renderOffset = new Position(size.getWidth() / 2, size.getHeight() - 12);
         this.collisionBoxOffset = new Position(collisionBoxSize.getWidth() / 2, collisionBoxSize.getHeight());
+    }
+
+    private String getRandomCharacter() {
+        Collections.shuffle(availableCharacter);
+        return availableCharacter.get(0);
     }
 
     @Override
@@ -60,9 +66,11 @@ public class Humanoid extends MovingEntity {
     }
 
     private void handleAction(State state) {
-        if(action.isPresent()) {
-            action.get().update(state, this);
-        }
+        action.ifPresent(value -> {
+            value.update(state, this);
+            value.playSound(state.getAudioPlayer());
+        });
+
     }
 
     protected void handleMotion() {
