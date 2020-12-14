@@ -3,7 +3,7 @@ package entities.humanoid.effect;
 import entities.humanoid.Humanoid;
 import entities.humanoid.action.Cough;
 import game.GameLoop;
-import game.state.State;
+import state.State;
 
 public class Sick extends Effect {
 

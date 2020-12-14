@@ -3,7 +3,7 @@ package entities;
 import ai.AIManager;
 import controller.EntityController;
 import entities.humanoid.Humanoid;
-import game.state.State;
+import state.State;
 import gfx.AnimationManager;
 import gfx.SpriteLibrary;
 

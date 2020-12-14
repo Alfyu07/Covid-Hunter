@@ -7,7 +7,7 @@ import entities.humanoid.Humanoid;
 import entities.humanoid.effect.Sick;
 import game.Game;
 import game.GameLoop;
-import game.state.State;
+import state.State;
 
 public class Cough extends Action{
 

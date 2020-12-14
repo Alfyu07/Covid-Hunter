@@ -1,7 +1,7 @@
 package ai.state;
 
 import entities.NPC;
-import game.state.State;
+import state.State;
 
 public abstract class AIState {
 

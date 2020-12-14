@@ -2,7 +2,7 @@ package ai.state;
 
 import ai.AICondition;
 import entities.NPC;
-import game.state.State;
+import state.State;
 
 public class AITransition {
     private String nextState;

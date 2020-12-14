@@ -5,7 +5,7 @@ import entities.humanoid.Humanoid;
 import entities.humanoid.action.BlowBubble;
 import entities.humanoid.effect.Isolated;
 import game.Game;
-import game.state.State;
+import state.State;
 import gfx.SpriteLibrary;
 
 import java.util.Comparator;

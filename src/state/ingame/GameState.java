@@ -1,4 +1,4 @@
-package game.state;
+package state.ingame;
 
 import controller.NPCController;
 import controller.PlayerController;
@@ -9,11 +9,15 @@ import entities.Player;
 import entities.SelectionCircle;
 import entities.humanoid.effect.Isolated;
 import entities.humanoid.effect.Sick;
-import game.ui.UIGameTime;
-import game.ui.UISicknessStatistics;
+import game.Game;
+import state.ingame.ui.UIGameTime;
+import state.ingame.ui.UISicknessStatistics;
 import input.Input;
 import map.GameMap;
+import state.State;
+import state.menu.MenuState;
 import ui.Alignment;
+import ui.Spacing;
 import ui.UIText;
 import ui.VerticalContainer;
 import ui.clickable.UIButton;
@@ -54,8 +58,8 @@ public class GameState extends State {
 
         gameObjects.add(circle);
 
-        initializeNPCs(100);
-        makeNumberOfNPCsSick(0);
+        initializeNPCs(20);
+        makeNumberOfNPCsSick(4);
     }
 
     private void makeNumberOfNPCsSick(int number) {
@@ -73,8 +77,8 @@ public class GameState extends State {
     }
 
     @Override
-    public void update() {
-        super.update();
+    public void update(Game game) {
+        super.update(game);
 
         if(playing) {
             if(victoryConditions.stream().allMatch(Condition::isMet)) {
@@ -98,14 +102,21 @@ public class GameState extends State {
 
     private void win() {
         playing = false;
-
         VerticalContainer winContainer = new VerticalContainer(camera.getSize());
-        winContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.CENTER));
-        winContainer.setBackgroundColor(Color.DARK_GRAY);
-        winContainer.addUIComponent(new UIButton("Menu", () -> System.out.println("Button 1 pressed!")));
-        winContainer.addUIComponent(new UIButton("Options", () -> System.out.println("Button 2 pressed!")));
-        winContainer.addUIComponent(new UIButton("Exit", () -> System.exit(0)));
+        winContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.START));
+
+        UIText victory = new UIText("VICTORY");
+        victory.setMargin(new Spacing(200));
+        winContainer.addUIComponent(victory);
+
+        VerticalContainer menuContainer = new VerticalContainer(camera.getSize());
+        menuContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.CENTER));
+        menuContainer.setBackgroundColor(Color.DARK_GRAY);
+        menuContainer.addUIComponent(new UIButton("Menu", (state) -> state.setNextState(new MenuState(windowSize,input))));
+        menuContainer.addUIComponent(new UIButton("Options", (state) -> System.out.println("Button 2 pressed!")));
+        menuContainer.addUIComponent(new UIButton("Exit", (state) -> System.exit(0)));
         uiContainers.add(winContainer);
+        uiContainers.add(menuContainer);
     }
 
     public long getNumberOfSick() {

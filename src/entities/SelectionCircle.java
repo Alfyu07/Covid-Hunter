@@ -3,7 +3,7 @@ package entities;
 import core.CollisionBox;
 import core.Position;
 import core.Size;
-import game.state.State;
+import state.State;
 import gfx.ImageUtils;
 
 import java.awt.*;

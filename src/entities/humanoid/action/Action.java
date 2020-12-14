@@ -1,7 +1,7 @@
 package entities.humanoid.action;
 
 import entities.humanoid.Humanoid;
-import game.state.State;
+import state.State;
 
 public abstract class Action {
 

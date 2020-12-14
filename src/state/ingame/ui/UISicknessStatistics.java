@@ -1,8 +1,8 @@
-package game.ui;
+package state.ingame.ui;
 
 import core.Size;
-import game.state.GameState;
-import game.state.State;
+import state.ingame.GameState;
+import state.State;
 import ui.*;
 
 public class UISicknessStatistics extends HorizontalContainer {

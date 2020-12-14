@@ -1,7 +1,6 @@
 package display;
 
-import game.Game;
-import game.state.State;
+import state.State;
 import input.Input;
 
 import javax.swing.JFrame;

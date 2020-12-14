@@ -3,7 +3,7 @@ package ai.state;
 import controller.NPCController;
 import core.Position;
 import entities.NPC;
-import game.state.State;
+import state.State;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@ package display;
 
 import core.Position;
 import game.Game;
-import game.state.State;
+import state.State;
 import map.GameMap;
 
 import java.awt.Graphics;
