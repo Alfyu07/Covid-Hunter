@@ -37,29 +37,24 @@ public abstract class State {
     public void update() {
         time.update();
         sortObjectsByPosition();
-        updateGameObject();
+        updateGameObjects();
         uiContainers.forEach(uiContainer -> uiContainer.update(this));
         camera.update(this);
         handleMouseInput();
     }
 
     private void handleMouseInput() {
-        if(input.isMouseClicked()){
-            System.out.println(String.format("MOUSE CLICKED AT POSITION (%d, %d)", input.getMousePosition().intX(), input.getMousePosition().intY()));
-        }
-
-        input.clearMouseCLick();
+        input.clearMouseClick();
     }
 
-    private void updateGameObject() {
-        for(int i = 0; i<gameObjects.size(); i++){
+    private void updateGameObjects() {
+        for(int i = 0; i < gameObjects.size(); i++) {
             gameObjects.get(i).update(this);
         }
     }
 
     private void sortObjectsByPosition() {
-        gameObjects.sort(Comparator.comparing(GameObject::getRenderOrder)
-                .thenComparing(gameObject -> gameObject.getPosition().getY()));
+        gameObjects.sort(Comparator.comparing(GameObject::getRenderOrder).thenComparing(gameObject -> gameObject.getPosition().getY()));
     }
 
     public List<GameObject> getGameObjects() {
@@ -92,9 +87,9 @@ public abstract class State {
         return uiContainers;
     }
 
-    public <T extends GameObject> List<T> getGameObjectsOfClass(Class<T> clazz){
+    public <T extends GameObject> List<T> getGameObjectsOfClass(Class<T> clazz) {
         return gameObjects.stream()
-                .filter(gameObject -> clazz.isInstance(gameObject))
+                .filter(clazz::isInstance)
                 .map(gameObject -> (T) gameObject)
                 .collect(Collectors.toList());
     }
@@ -106,4 +101,9 @@ public abstract class State {
     public void spawn(GameObject gameObject) {
         gameObjects.add(gameObject);
     }
+
+    public Input getInput() {
+        return input;
+    }
 }
+

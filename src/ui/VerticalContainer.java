@@ -3,7 +3,7 @@ package ui;
 import core.Position;
 import core.Size;
 
-public class VerticalContainer extends UIContainer{
+public class VerticalContainer extends UIContainer {
     public VerticalContainer(Size windowSize) {
         super(windowSize);
     }
@@ -13,25 +13,25 @@ public class VerticalContainer extends UIContainer{
         int combinedChildHeight = 0;
         int widestChildWidth = 0;
 
-        for (UIComponent uiComponent : child){
-            combinedChildHeight += uiComponent.getSize().getHeight() +
-                    uiComponent.getMargin().getVertical();
+        for(UIComponent uiComponent : children) {
+            combinedChildHeight += uiComponent.getSize().getHeight() + uiComponent.getMargin().getVertical();
 
-            if(uiComponent.getSize().getWidth() > widestChildWidth){
+            if(uiComponent.getSize().getWidth() > widestChildWidth) {
                 widestChildWidth = uiComponent.getSize().getWidth();
             }
         }
+
         return new Size(widestChildWidth, combinedChildHeight);
     }
 
     @Override
-    protected void calculatedContentPosition() {
+    protected void calculateContentPosition() {
         int currentY = padding.getTop();
 
-        for (UIComponent uiComponent : child){
+        for(UIComponent uiComponent : children) {
             currentY += uiComponent.getMargin().getTop();
-            //setPosition to top left of the object
-            uiComponent.setPosition(new Position(padding.getLeft(), currentY));
+            uiComponent.setRelativePosition(new Position(padding.getLeft(), currentY));
+            uiComponent.setAbsolutePosition(new Position(padding.getLeft() + absolutePosition.intX(), currentY + absolutePosition.intY()));
             currentY += uiComponent.getSize().getHeight();
             currentY += uiComponent.getMargin().getBottom();
         }

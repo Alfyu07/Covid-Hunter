@@ -20,8 +20,8 @@ public class Renderer {
         state.getUIContainers().forEach(uiContainer ->
                 g.drawImage(
                         uiContainer.getSprite(),
-                        uiContainer.getPosition().intX(),
-                        uiContainer.getPosition().intY(),
+                        uiContainer.getRelativePosition().intX(),
+                        uiContainer.getRelativePosition().intY(),
                         null
                 ));
     }

@@ -3,37 +3,38 @@ package ui;
 import core.Position;
 import core.Size;
 
-public class HorizontalContainer extends UIContainer{
+public class HorizontalContainer extends UIContainer {
     public HorizontalContainer(Size windowSize) {
         super(windowSize);
     }
 
     @Override
     protected Size calculateContentSize() {
-        int combinedChildWith = 0;
-        int tallesChiledHeihgt = 0;
+        int combinedChildWidth = 0;
+        int tallestChildHeight = 0;
 
-        for (UIComponent uiComponent : child){
-            combinedChildWith += uiComponent.getSize().getWidth() +
-                    uiComponent.getMargin().getHorizontal();
+        for(UIComponent uiComponent : children) {
+            combinedChildWidth += uiComponent.getSize().getWidth() + uiComponent.getMargin().getHorizontal();
 
-            if(uiComponent.getSize().getHeight() > tallesChiledHeihgt){
-                tallesChiledHeihgt = uiComponent.getSize().getHeight();
+            if(uiComponent.getSize().getHeight() > tallestChildHeight) {
+                tallestChildHeight = uiComponent.getSize().getHeight();
             }
         }
-        return new Size(combinedChildWith, tallesChiledHeihgt);
+
+        return new Size(combinedChildWidth, tallestChildHeight);
     }
 
     @Override
-    protected void calculatedContentPosition() {
+    protected void calculateContentPosition() {
         int currentX = padding.getLeft();
 
-        for (UIComponent uiComponent : child){
+        for(UIComponent uiComponent : children) {
             currentX += uiComponent.getMargin().getLeft();
-            //setPosition to top left of the object
-            uiComponent.setPosition(new Position(currentX, padding.getTop()));
+            uiComponent.setRelativePosition(new Position(currentX, padding.getTop()));
+            uiComponent.setAbsolutePosition(new Position(currentX + absolutePosition.intX(), padding.getTop() + absolutePosition.intY()));
             currentX += uiComponent.getSize().getWidth();
             currentX += uiComponent.getMargin().getRight();
         }
     }
 }
+

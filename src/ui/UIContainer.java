@@ -16,89 +16,107 @@ import java.util.List;
 * bisa jadi container atau jadi component sendiri
 *
 * */
-public abstract class UIContainer extends UIComponent{
+
+public abstract class UIContainer extends UIComponent {
 
     protected Color backgroundColor;
-    protected List<UIComponent> child;
+
     protected Alignment alignment;
     protected Size windowSize;
+
+    protected Size fixedSize;
+
+    protected List<UIComponent> children;
 
     public UIContainer(Size windowSize) {
         super();
         this.windowSize = windowSize;
-        alignment = new Alignment(Alignment.Position.CENTER, Alignment.Position.END);
-        this.backgroundColor = new Color(0,0,0,0);
+        alignment = new Alignment(Alignment.Position.START, Alignment.Position.START);
+        backgroundColor = new Color(0, 0, 0, 0);
         margin = new Spacing(5);
         padding = new Spacing(5);
-        child = new ArrayList<>();
+        children = new ArrayList<>();
         calculateSize();
         calculatePosition();
     }
 
     protected abstract Size calculateContentSize();
+    protected abstract void calculateContentPosition();
 
-    protected abstract void calculatedContentPosition();
-    private void calculateSize(){
+    private void calculateSize() {
         Size calculatedContentSize = calculateContentSize();
-        size = new Size(padding.getHorizontal() + calculatedContentSize.getWidth(),
+        size = fixedSize != null
+                ? fixedSize
+                : new Size(
+                padding.getHorizontal() + calculatedContentSize.getWidth(),
                 padding.getVertical() + calculatedContentSize.getHeight());
     }
-    private void calculatePosition(){
+
+    private void calculatePosition() {
         int x = padding.getLeft();
-        if(alignment.getHorizontal().equals(Alignment.Position.CENTER)){
+        if(alignment.getHorizontal().equals(Alignment.Position.CENTER)) {
             x = windowSize.getWidth() / 2 - size.getWidth() / 2;
         }
-        if(alignment.getHorizontal().equals(Alignment.Position.END)){
+        if(alignment.getHorizontal().equals(Alignment.Position.END)) {
             x = windowSize.getWidth() - size.getWidth() - margin.getRight();
         }
+
         int y = padding.getTop();
-        if(alignment.getVertical().equals(Alignment.Position.CENTER)){
+        if(alignment.getVertical().equals(Alignment.Position.CENTER)) {
             y = windowSize.getHeight() / 2 - size.getHeight() / 2;
         }
-        if(alignment.getVertical().equals(Alignment.Position.END)){
+        if(alignment.getVertical().equals(Alignment.Position.END)) {
             y = windowSize.getHeight() - size.getHeight() - margin.getBottom();
         }
-        this.position = new Position(x, y);
-        calculatedContentPosition();
+
+        this.relativePosition = new Position(x, y);
+        this.absolutePosition = new Position(x, y);
+        calculateContentPosition();
     }
+
     @Override
     public Image getSprite() {
-        BufferedImage Image = (BufferedImage) ImageUtils.createCompatibleImage(size,ImageUtils.ALPHA_BIT_MASKED);
-        Graphics2D g = Image.createGraphics();
-        g.setColor(backgroundColor);
-        g.fillRect(0,0, size.getWidth(), size.getHeight());
+        BufferedImage image = (BufferedImage) ImageUtils.createCompatibleImage(size, ImageUtils.ALPHA_BIT_MASKED);
+        Graphics2D graphics = image.createGraphics();
 
+        graphics.setColor(backgroundColor);
+        graphics.fillRect(0, 0, size.getWidth(), size.getHeight());
 
-
-        for(UIComponent uiComponent: child){
-            g.drawImage(
+        for(UIComponent uiComponent : children) {
+            graphics.drawImage(
                     uiComponent.getSprite(),
-                    uiComponent.getPosition().intX(),
-                    uiComponent.getPosition().intY(),
+                    uiComponent.getRelativePosition().intX(),
+                    uiComponent.getRelativePosition().intY(),
                     null
             );
         }
-        g.dispose();
-        return Image;
+
+        graphics.dispose();
+        return image;
     }
 
     @Override
     public void update(State state) {
-        child.forEach(uiComponent -> uiComponent.update(state));
+        children.forEach(component -> component.update(state));
         calculateSize();
         calculatePosition();
     }
 
-    public void addUIComponent(UIComponent uiComponent){
-        child.add(uiComponent);
-
+    public void addUIComponent(UIComponent uiComponent) {
+        children.add(uiComponent);
     }
 
-    public void setBackgroundColor(Color color){
+    public void setBackgroundColor(Color color) {
         backgroundColor = color;
     }
 
     public void setAlignment(Alignment alignment) {
         this.alignment = alignment;
     }
+
+    public void setFixedSize(Size fixedSize) {
+        this.fixedSize = fixedSize;
+    }
 }
+
+

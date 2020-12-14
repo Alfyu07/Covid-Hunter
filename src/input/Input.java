@@ -81,10 +81,6 @@ public class Input implements KeyListener , MouseListener, MouseMotionListener {
 
     }
 
-    public void clearMouseCLick(){
-        mouseClicked = false;
-    }
-
 
     public Position getMousePosition() {
         return mousePosition;
@@ -96,5 +92,9 @@ public class Input implements KeyListener , MouseListener, MouseMotionListener {
 
     public boolean isMousePressed() {
         return mousePressed;
+    }
+
+    public void clearMouseClick() {
+        mouseClicked = false;
     }
 }
