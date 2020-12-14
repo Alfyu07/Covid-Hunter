@@ -3,6 +3,7 @@ package ui.clickable;
 import core.Size;
 import gfx.ImageUtils;
 import state.State;
+import ui.Spacing;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,7 +18,7 @@ public class UISlider extends UIClickable{
         this.min = min;
         this.max = max;
         this.value = max;
-
+        this.margin = new Spacing(0,0,10,0);
         //tambah size dari slider
         this.size = new Size(360,10);
     }
@@ -39,7 +40,13 @@ public class UISlider extends UIClickable{
     }
 
     @Override
-    protected void onClick(State state) {
+    protected void onClick(State state) { }
+
+    @Override
+    protected void onFocus(State state) { }
+
+    @Override
+    protected void onDrag(State state) {
         this.value = getValueAt(state.getInput().getMousePosition().getX());
 
     }

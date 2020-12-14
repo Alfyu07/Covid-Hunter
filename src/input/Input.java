@@ -19,7 +19,7 @@ public class Input implements KeyListener , MouseListener, MouseMotionListener {
     public Input(){
         currentlyPressed = new boolean[256];
         pressed = new boolean[256];
-        mousePosition = new Position(0,0);
+        mousePosition = new Position(-1,-1);
     }
 
     public boolean isPressed(int keyCode){
