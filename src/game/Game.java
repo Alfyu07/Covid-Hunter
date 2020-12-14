@@ -19,7 +19,7 @@ public class Game {
     private GameSetting settings;
     private GameController gameController;
 
-    public Game(int width, int height) {
+    public  Game(int width, int height) {
         input = new Input();
         display = new Display(width, height,input);
         state = new MenuState(new Size(width,height), input);

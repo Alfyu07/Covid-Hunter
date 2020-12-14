@@ -14,6 +14,7 @@ public class MenuState extends State {
         gameMap = new GameMap(new Size(20, 20), spriteLibrary);
 
         uiContainers.add(new UIMainMenu(windowSize));
+        audioPlayer.playMusic("/sounds/isobubbler.wav");
     }
 
     public void enterMenu(UIContainer container){
