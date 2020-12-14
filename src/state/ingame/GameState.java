@@ -10,6 +10,7 @@ import entities.SelectionCircle;
 import entities.humanoid.effect.Isolated;
 import entities.humanoid.effect.Sick;
 import game.Game;
+import game.settings.GameSettings;
 import state.ingame.ui.UIGameTime;
 import state.ingame.ui.UISicknessStatistics;
 import input.Input;
@@ -31,8 +32,8 @@ public class GameState extends State {
     private List<Condition> defeatConditions;
     private boolean playing;
 
-    public GameState(Size windowSize, Input input) {
-        super(windowSize, input);
+    public GameState(Size windowSize, Input input, GameSettings gameSettings) {
+        super(windowSize, input, gameSettings);
         gameMap = new GameMap(new Size(20, 20), spriteLibrary);
         playing = true;
         initializeCharacters();
@@ -112,7 +113,7 @@ public class GameState extends State {
         VerticalContainer menuContainer = new VerticalContainer(camera.getSize());
         menuContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.CENTER));
         menuContainer.setBackgroundColor(Color.DARK_GRAY);
-        menuContainer.addUIComponent(new UIButton("Menu", (state) -> state.setNextState(new MenuState(windowSize,input))));
+        menuContainer.addUIComponent(new UIButton("Menu", (state) -> state.setNextState(new MenuState(windowSize,input, gameSettings))));
         menuContainer.addUIComponent(new UIButton("Options", (state) -> System.out.println("Button 2 pressed!")));
         menuContainer.addUIComponent(new UIButton("Exit", (state) -> System.exit(0)));
         uiContainers.add(winContainer);

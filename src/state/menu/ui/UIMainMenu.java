@@ -17,7 +17,7 @@ public class UIMainMenu extends VerticalContainer {
         UIText title = new UIText("COVID HUNTER");
         title.setMargin(new Spacing(10));
         addUIComponent(title);
-        addUIComponent(new UIButton("Play", (state) -> state.setNextState(new GameState(windowSize,state.getInput()))));
+        addUIComponent(new UIButton("Play", (state) -> state.setNextState(new GameState(windowSize,state.getInput(), state.getGameSettings()))));
         addUIComponent(new UIButton("OPTIONS", (state) -> ((MenuState) state).enterMenu(new UIOptionMenu(windowSize))));
         addUIComponent(new UIButton("EXIT", (state)-> System.exit(0)));
     }

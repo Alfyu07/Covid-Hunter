@@ -1,6 +1,6 @@
 package audio;
 
-import game.settings.GameSetting;
+import game.settings.AudioSettings;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
@@ -10,11 +10,13 @@ import java.util.List;
 
 public class AudioPlayer {
 
+    private AudioSettings audioSettings;
     private List<AudioClip> audioClips;
 
-    public void update(GameSetting gameSetting){
+    public void update(AudioSettings audioSettings){
+        this.audioSettings = audioSettings;;
         //update volume and everything first
-        audioClips.forEach(audioClip -> audioClip.update(gameSetting));
+        audioClips.forEach(audioClip -> audioClip.update(audioSettings));
 
         List.copyOf(audioClips).forEach(audioClip -> {
             if(audioClip.hasFinishedPlaying()){
@@ -24,18 +26,23 @@ public class AudioPlayer {
         });
     }
 
-    public AudioPlayer(){
+    public AudioPlayer(AudioSettings audioSettings){
         audioClips = new ArrayList<>();
+        this.audioSettings = audioSettings;
     }
 
     public void playMusic(String fileName){
         final Clip clip = getClip(fileName);
-        audioClips.add(new MusicClip(clip));
+        MusicClip musicClip = new MusicClip(clip);
+        musicClip.setVolume(audioSettings);
+        audioClips.add(musicClip);
     }
 
     public void playSound(String fileName){
         final Clip clip = getClip(fileName);
-        audioClips.add(new SoundClip(clip));
+        SoundClip soundClip = new SoundClip(clip);
+        soundClip.setVolume(audioSettings);
+        audioClips.add(soundClip);
     }
     private Clip getClip(String fileName){
         final URL soundFile = AudioPlayer.class.getResource(fileName);

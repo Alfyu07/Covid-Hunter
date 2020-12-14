@@ -14,19 +14,16 @@ import java.util.List;
 
 /*
 * bisa jadi container atau jadi component sendiri
-*
 * */
 
 public abstract class UIContainer extends UIComponent {
 
     protected Color backgroundColor;
-
     protected Alignment alignment;
     protected Size windowSize;
-
     protected Size fixedSize;
-
     protected List<UIComponent> children;
+
 
     public UIContainer(Size windowSize) {
         super();
@@ -70,7 +67,9 @@ public abstract class UIContainer extends UIComponent {
         }
 
         this.relativePosition = new Position(x, y);
-        this.absolutePosition = new Position(x, y);
+        if(parent == null){
+            this.absolutePosition = new Position(x, y);
+        }
         calculateContentPosition();
     }
 
@@ -104,6 +103,7 @@ public abstract class UIContainer extends UIComponent {
 
     public void addUIComponent(UIComponent uiComponent) {
         children.add(uiComponent);
+        uiComponent.setParent(this);
     }
 
     public void setBackgroundColor(Color color) {

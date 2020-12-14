@@ -3,8 +3,7 @@ package game;
 import controller.GameController;
 import core.Size;
 import display.Display;
-import game.settings.GameSetting;
-import state.ingame.GameState;
+import game.settings.GameSettings;
 import state.State;
 import input.Input;
 import state.menu.MenuState;
@@ -16,14 +15,14 @@ public class Game {
     private Display display;
     private Input input;
     private State state;
-    private GameSetting settings;
+    private GameSettings settings;
     private GameController gameController;
 
     public  Game(int width, int height) {
         input = new Input();
         display = new Display(width, height,input);
-        state = new MenuState(new Size(width,height), input);
-        settings = new GameSetting(false);
+        settings = new GameSettings(false);
+        state = new MenuState(new Size(width,height), input, settings);
         gameController = new GameController(input);
     }
 
@@ -37,7 +36,7 @@ public class Game {
     }
 
 
-    public GameSetting getSettings() {
+    public GameSettings getSettings() {
         return settings;
     }
 
