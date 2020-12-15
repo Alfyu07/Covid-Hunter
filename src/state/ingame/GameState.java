@@ -19,6 +19,8 @@ import input.Input;
 import map.GameMap;
 import state.State;
 import state.menu.MenuState;
+import state.score.Score;
+import state.score.ScoreState;
 import ui.Alignment;
 import ui.Spacing;
 import ui.UIText;
@@ -116,7 +118,11 @@ public class GameState extends State {
         VerticalContainer menuContainer = new VerticalContainer(camera.getSize());
         menuContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.CENTER));
         menuContainer.setBackgroundColor(Color.DARK_GRAY);
-        menuContainer.addUIComponent(new UIButton("Menu", (state) -> state.setNextState(new MenuState(windowSize,input, gameSettings))));
+        menuContainer.addUIComponent(new UIButton("Finished", (state) -> state.setNextState(new ScoreState(windowSize,
+                input,
+                gameSettings,
+                Score.createNew(((GameState)state).getScore())
+        ))));
         menuContainer.addUIComponent(new UIButton("Exit", (state) -> System.exit(0)));
         uiContainers.add(winContainer);
         uiContainers.add(menuContainer);
@@ -140,7 +146,11 @@ public class GameState extends State {
         VerticalContainer menuContainer = new VerticalContainer(camera.getSize());
         menuContainer.setAlignment(new Alignment(Alignment.Position.CENTER, Alignment.Position.CENTER));
         menuContainer.setBackgroundColor(Color.DARK_GRAY);
-        menuContainer.addUIComponent(new UIButton("Menu", (state) -> state.setNextState(new MenuState(windowSize,input, gameSettings))));
+        menuContainer.addUIComponent(new UIButton("Finished", (state) -> state.setNextState(new ScoreState(windowSize,
+                input,
+                gameSettings,
+                Score.createNew(((GameState)state).getScore())
+        ))));
         menuContainer.addUIComponent(new UIButton("Exit", (state) -> System.exit(0)));
         uiContainers.add(winContainer);
         uiContainers.add(menuContainer);

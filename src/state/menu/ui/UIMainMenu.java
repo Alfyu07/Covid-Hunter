@@ -1,7 +1,6 @@
 package state.menu.ui;
 
 import core.Size;
-import game.Game;
 import state.ingame.GameState;
 import state.menu.MenuState;
 import ui.Alignment;

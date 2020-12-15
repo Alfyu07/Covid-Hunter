@@ -121,10 +121,6 @@ public abstract class State {
         return input;
     }
 
-    public State getNextState() {
-        return nextState;
-    }
-
     public void setNextState(State nextState) {
         this.nextState = nextState;
     }
@@ -139,6 +135,10 @@ public abstract class State {
 
     public void cleanUp() {
         audioPlayer.clear();
+    }
+
+    public Size getWindowSize() {
+        return windowSize;
     }
 }
 

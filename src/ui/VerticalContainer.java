@@ -8,6 +8,8 @@ public class VerticalContainer extends UIContainer {
         super(windowSize);
     }
 
+
+
     @Override
     protected Size calculateContentSize() {
         int combinedChildHeight = 0;
